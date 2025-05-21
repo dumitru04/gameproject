@@ -49,19 +49,8 @@ func _physics_process(delta):
 
 # Функция для получения урона (из предыдущей части)
 func take_damage():
-    # Если вы используете GameManager для управления жизнями:
-    # GameManager.lose_life()
-    # if GameManager.lives <= 0:
-    #    print("Игра окончена через GameManager!")
-    #    get_tree().reload_current_scene()
-    #    # или GameManager.reset_game() или другая логика
-
-    # Если используете локальное здоровье, как объявлено выше:
-    health -= 1
-    print("Здоровье игрока: ", health)
-    if health <= 0:
-        print("Игра окончена!")
-        # Здесь можно перезагрузить текущий уровень:
+    # health -= 1 # Локальное здоровье теперь можно убрать, если используется GameManager
+    GameManager.lose_life() # Уменьшаем жизни через GameManager
+    # ... остальная логика получения урона ...
+    if GameManager.lives <= 0:
         get_tree().reload_current_scene()
-        # Или перейти на экран "Game Over"
-    # Дополнительно: анимация получения урона, временная неуязвимость и т.д.

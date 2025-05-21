@@ -12,8 +12,7 @@ func _ready():
      animated_sprite.play("spin") # Предполагаем, что есть анимация "spin"
 
 func _on_body_entered(body):
-    if body.name == "Player": # Проверяем, что это игрок
-        emit_signal("coin_collected")
-        # Опционально: проиграть звук сбора монеты
-        # $AudioStreamPlayer.play() # Если есть узел AudioStreamPlayer
-        queue_free() # Уничтожить монету
+    if body.name == "Player":
+        GameManager.add_score(10) # Добавляем очки через GameManager
+        # emit_signal("coin_collected") # Сигнал теперь может быть не нужен, если UI обновляется через GameManager
+        queue_free()
