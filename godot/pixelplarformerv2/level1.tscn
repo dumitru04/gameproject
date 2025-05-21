@@ -360,3 +360,6 @@ position = Vector2(273, -24)
 process_mode = 3
 stream = ExtResource("7_i2041")
 autoplay = true
+
+[node name="Enemy2" parent="." instance=ExtResource("4_v38iq")]
+position = Vector2(2525, 30)
