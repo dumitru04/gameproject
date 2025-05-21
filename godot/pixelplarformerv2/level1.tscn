@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bg0nr2wm77ypr"]
+[gd_scene load_steps=9 format=3 uid="uid://bg0nr2wm77ypr"]
 
 [ext_resource type="Texture2D" uid="uid://hrwdgxky2mdi" path="res://assets/tilemap.png" id="1_jwv3a"]
 [ext_resource type="PackedScene" uid="uid://onkpwdnbhcko" path="res://player.tscn" id="2_dopym"]
 [ext_resource type="Texture2D" uid="uid://bbcemplqr1b1l" path="res://assets/atlastiles.png" id="2_ootpb"]
+[ext_resource type="PackedScene" uid="uid://byj0xfhfulh25" path="res://enemy.tscn" id="4_v38iq"]
+[ext_resource type="PackedScene" uid="uid://igv6i7titxui" path="res://coin.tscn" id="5_v8kj3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jwv3a"]
 texture = ExtResource("1_jwv3a")
@@ -326,3 +328,15 @@ layer_0/tile_data = PackedInt32Array(196602, 65539, 1, 196603, 131075, 1, 196604
 
 [node name="Player" parent="." instance=ExtResource("2_dopym")]
 position = Vector2(67, 18)
+
+[node name="Enemy" parent="." instance=ExtResource("4_v38iq")]
+position = Vector2(347, 25)
+
+[node name="Coin" parent="." instance=ExtResource("5_v8kj3")]
+position = Vector2(147, -19)
+
+[node name="Coin2" parent="." instance=ExtResource("5_v8kj3")]
+position = Vector2(237, -24)
+
+[node name="Coin3" parent="." instance=ExtResource("5_v8kj3")]
+position = Vector2(273, -24)

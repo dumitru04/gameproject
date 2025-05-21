@@ -5,8 +5,14 @@ extends CharacterBody2D
 @export var jump_velocity = -350.0  # Сила прыжка (отрицательное значение, т.к. Y идет вниз)
 
 # Получаем значение гравитации из настроек проекта
-# Это удобно, так как гравитация будет одинаковой для всех физических объектов
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+
+# Ссылка на узел AnimatedSprite2D
+# Убедитесь, что имя узла в сцене совпадает (например, "AnimatedSprite2D" или "AnimatedSprite")
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D 
+
+# Пример локального здоровья, если вы не используете GameManager для этого
+var health = 3 
 
 func _physics_process(delta):
     # Применяем гравитацию, если игрок не на земле
@@ -14,27 +20,48 @@ func _physics_process(delta):
         velocity.y += gravity * delta
 
     # Обработка прыжка
-    # "ui_accept" обычно привязана к Space или Enter, можно изменить в "Настройки проекта" -> "Карта ввода"
-    # Для прыжка лучше использовать "ui_up" (стрелка вверх) или создать свое действие.
     if Input.is_action_just_pressed("ui_up") and is_on_floor():
         velocity.y = jump_velocity
 
     # Получаем направление ввода (влево/вправо)
-    # "ui_left" и "ui_right" привязаны к стрелкам влево и вправо
     var direction = Input.get_axis("ui_left", "ui_right")
-
-    # Движение влево/вправо
-    if direction:
+    
+    # Движение и анимация
+    if direction: # Если есть горизонтальный ввод (игрок двигается)
         velocity.x = direction * speed
-    else:
-        # Плавная остановка, если нет ввода
-        velocity.x = move_toward(velocity.x, 0, speed)
+        animated_sprite.play("run") # Воспроизводим анимацию "run"
+        
+        # Отражение спрайта в зависимости от направления движения
+        if direction < 0: # Идет влево
+            animated_sprite.flip_h = false
+        elif direction > 0: # Идет вправо
+            animated_sprite.flip_h = true
+    else: # Если нет горизонтального ввода (игрок не двигается по горизонтали)
+        velocity.x = move_toward(velocity.x, 0, speed) # Плавная остановка
+        
+        # Останавливаем анимацию и показываем первый кадр (индекс 0) анимации "run".
+        # Это будет использоваться как состояние покоя или для прыжка на месте.
+        animated_sprite.stop()
+        animated_sprite.set_frame(0) # Устанавливаем анимацию на первый кадр
 
     # Встроенная функция для движения и обработки столкновений
     move_and_slide()
 
-    # Простое отражение спрайта в зависимости от направления движения
-    if direction < 0: # Идет влево
-        $Sprite2D.flip_h = true
-    elif direction > 0: # Идет вправо
-        $Sprite2D.flip_h = false
+# Функция для получения урона (из предыдущей части)
+func take_damage():
+    # Если вы используете GameManager для управления жизнями:
+    # GameManager.lose_life()
+    # if GameManager.lives <= 0:
+    #    print("Игра окончена через GameManager!")
+    #    get_tree().reload_current_scene()
+    #    # или GameManager.reset_game() или другая логика
+
+    # Если используете локальное здоровье, как объявлено выше:
+    health -= 1
+    print("Здоровье игрока: ", health)
+    if health <= 0:
+        print("Игра окончена!")
+        # Здесь можно перезагрузить текущий уровень:
+        get_tree().reload_current_scene()
+        # Или перейти на экран "Game Over"
+    # Дополнительно: анимация получения урона, временная неуязвимость и т.д.
