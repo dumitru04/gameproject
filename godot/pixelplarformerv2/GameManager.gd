@@ -1,17 +1,17 @@
+# GameManager.gd
 extends Node
 
 var score = 0
 var lives = 1  # Начальное количество жизней
 var max_lives = 3 # Максимальное количество жизней
-var points_for_extra_life = 500 # Очки за жизнь, если достигнут максимум
+var points_for_extra_life = 500 # Очки за жизнь, если жизни уже на максимуме
 
 signal score_updated(new_score)
 signal lives_updated(new_lives)
-# Сигнал для UI, чтобы показать, что были начислены очки вместо жизни
-signal score_added_for_life(points_value) 
+signal score_added_for_life(points_value) # Сигнал для UI о начислении очков вместо жизни
 
 func _ready():
-    # Вы можете захотеть сбрасывать это при каждом запуске игры или уровня
+    # Вызываем reset_game_state() при старте, чтобы инициализировать значения
     reset_game_state() 
 
 func add_score(amount: int):
@@ -21,29 +21,35 @@ func add_score(amount: int):
 func lose_life():
     lives -= 1
     emit_signal("lives_updated", lives)
-    if lives < 0: # Обычно жизни не уходят в минус, 0 - это конец игры
-        lives = 0 # Корректируем на всякий случай
-        emit_signal("lives_updated", lives) # Обновляем UI если было <0
+    if lives < 0: 
+        lives = 0 # Жизни не должны быть отрицательными
+        emit_signal("lives_updated", lives) # Обновляем UI, если было < 0
         print("Игра окончена из GameManager!")
-        # Здесь логика "Game Over", например, перезапуск текущей сцены:
+        # Логика "Game Over", например, перезапуск текущей сцены:
+        get_tree().reload_current_scene() 
+func fall_life():
+    lives -= 5
+    emit_signal("lives_updated", lives)
+    if lives < 0: 
+        lives = 0 # Жизни не должны быть отрицательными
+        emit_signal("lives_updated", lives) # Обновляем UI, если было < 0
+        print("Игра окончена из GameManager!")
+        # Логика "Game Over", например, перезапуск текущей сцены:
         get_tree().reload_current_scene() 
 
 func add_life():
     if lives < max_lives:
         lives += 1
         emit_signal("lives_updated", lives)
-        # Проиграть звук получения жизни
+        # Здесь можно проиграть звук получения жизни
     else:
         add_score(points_for_extra_life)
-        emit_signal("score_added_for_life", points_for_extra_life) # Отправляем сигнал с количеством очков
+        emit_signal("score_added_for_life", points_for_extra_life)
         print("Максимум жизней достигнут. Начислено {points_for_extra_life} очков.")
-        # Проиграть звук получения очков
+        # Здесь можно проиграть звук получения очков (отличный от звука получения жизни)
 
-func reset_game_state(): # Вызывать при старте новой игры или перезапуске уровня (если нужно)
+func reset_game_state():
     score = 0
-    lives = 1
+    lives = 1 # Устанавливаем начальное количество жизней
     emit_signal("score_updated", score)
     emit_signal("lives_updated", lives)
-
-# Вызовите эту функцию при старте игры (например, из главной сцены или _ready() GameManager)
-# reset_game_state()

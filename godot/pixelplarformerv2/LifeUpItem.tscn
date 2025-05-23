@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://bc1m3wv58hior"]
+
+[ext_resource type="Script" uid="uid://0wa3obclhnmk" path="res://life_up_item.gd" id="1_6u06k"]
+[ext_resource type="Texture2D" uid="uid://ceksepuf0ro8x" path="res://assets/life.png" id="1_ik6rf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ji5wd"]
+size = Vector2(14, 12)
+
+[node name="LifeUpItem" type="Area2D"]
+script = ExtResource("1_6u06k")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ik6rf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ji5wd")

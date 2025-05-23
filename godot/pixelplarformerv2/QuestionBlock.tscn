@@ -1,0 +1,51 @@
+[gd_scene load_steps=9 format=3 uid="uid://bwcowo6meeku5"]
+
+[ext_resource type="Script" uid="uid://3aakx8hq7s5k" path="res://question_block.gd" id="1_bf42g"]
+[ext_resource type="Texture2D" uid="uid://digm63rl2hxa7" path="res://assets/item_block.png" id="1_rorfs"]
+[ext_resource type="PackedScene" uid="uid://igv6i7titxui" path="res://coin.tscn" id="2_51l48"]
+[ext_resource type="PackedScene" uid="uid://bc1m3wv58hior" path="res://LifeUpItem.tscn" id="3_2f7sd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bf42g"]
+atlas = ExtResource("1_rorfs")
+region = Rect2(18, 0, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_584my"]
+atlas = ExtResource("1_rorfs")
+region = Rect2(0, 0, 18, 18)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_51l48"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bf42g")
+}],
+"loop": true,
+"name": &"active",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_584my")
+}],
+"loop": true,
+"name": &"empty",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2f7sd"]
+size = Vector2(18, 18)
+
+[node name="QuestionBlock" type="StaticBody2D"]
+script = ExtResource("1_bf42g")
+coin_scene = ExtResource("2_51l48")
+life_up_scene = ExtResource("3_2f7sd")
+
+[node name="BlockSprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_51l48")
+animation = &"active"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_2f7sd")
+
+[node name="ItemSpawnPoint" type="Marker2D" parent="."]
+position = Vector2(0, -14)

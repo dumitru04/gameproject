@@ -28,8 +28,9 @@ animations = [{
 "speed": 10.0
 }]
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_onrkg")
+death_y_threshold = 100.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 0.5)
@@ -45,3 +46,7 @@ sprite_frames = SubResource("SpriteFrames_hqtel")
 animation = &"run"
 frame = 1
 frame_progress = 1.0
+
+[node name="HeadHitRaycast" type="RayCast2D" parent="."]
+position = Vector2(0, -9)
+target_position = Vector2(0, -10)
