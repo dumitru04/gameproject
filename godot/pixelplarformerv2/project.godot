@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+GameOverMenu="*res://game_over_menu.tscn"
 GameManager="*res://GameManager.gd"
 
 [display]

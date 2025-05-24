@@ -348,7 +348,6 @@ layer_0/tile_data = PackedInt32Array(196602, 65539, 1, 196603, 131075, 1, 196604
 
 [node name="Player" parent="." instance=ExtResource("2_dopym")]
 position = Vector2(67, 18)
-death_y_threshold = 1000.0
 pause_menu_node_path = NodePath("../PauseMenu")
 
 [node name="Enemy" parent="." instance=ExtResource("4_v38iq")]

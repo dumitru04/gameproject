@@ -22,18 +22,32 @@ func add_score(amount: int):
 	emit_signal("score_updated", score)
 
 func lose_life():
-	# ... (код без изменений) ...
 	lives -= 1
 	emit_signal("lives_updated", lives)
+	
 	if lives <= 0: 
-		print("GameManager: Игрок потерял последнюю жизнь (жизни: {lives})! Game Over.")
-		reset_game_state_and_restart_level("Все жизни потеряны")
+		print("GameManager: Игрок потерял последнюю жизнь (жизни: {lives})!")
+		_trigger_game_over_sequence("Все жизни потеряны")
 
 
 func trigger_instant_game_over(reason: String = "Неизвестная причина"):
-	# ... (код без изменений) ...
 	print("GameManager: Мгновенный Game Over! Причина: {reason}")
-	reset_game_state_and_restart_level(reason)
+	lives = 0 # Устанавливаем жизни в 0 для корректного отображения, если это важно
+	emit_signal("lives_updated", lives) # Обновляем UI
+	_trigger_game_over_sequence(reason)
+	
+func _trigger_game_over_sequence(reason_for_log: String):
+	print("[GameManager] Запуск последовательности Game Over. Причина: " + reason_for_log)
+	print("[GameManager] Текущий счет для передачи: " + str(score))
+	
+	var game_over_menu_exists = Engine.has_singleton("GameOverMenu")
+	print("[GameManager] Autoload 'GameOverMenu' существует: " + str(game_over_menu_exists))
+
+	if game_over_menu_exists:
+		GameOverMenu.show_screen(score) # Передаем текущий счет на экран
+	else:
+		print("GameManager: !!! ОШИБКА: Autoload 'GameOverMenu' не найден! Выполняю аварийный перезапуск.")
+		_fallback_hard_restart()
 
 
 func add_life():
@@ -52,15 +66,12 @@ func add_life():
 func reset_game_state():
 	score = 0
 	lives = initial_lives 
-	has_key = false # НОВОЕ: сбрасываем ключ при полном рестарте игры
-	print("GameManager: Состояние игры сброшено. Счет: {score}, Жизни: {lives}, Ключ: {has_key}")
+	print("GameManager: Состояние игры сброшено. Счет: {score}, Жизни: {lives}")
 	emit_signal("score_updated", score)
 	emit_signal("lives_updated", lives)
-	emit_signal("key_status_updated", has_key) # Обновляем UI по ключу
 
-func reset_game_state_and_restart_level(reason_for_log: String):
-	# ... (код без изменений) ...
-	print("GameManager: Выполняется reset_game_state_and_restart_level. Причина: {reason_for_log}")
+func _fallback_hard_restart(): # Если экран Game Over не загрузился
+	print("GameManager: _fallback_hard_restart: Сброс и перезапуск уровня.")
 	reset_game_state()
 	get_tree().reload_current_scene()
 
