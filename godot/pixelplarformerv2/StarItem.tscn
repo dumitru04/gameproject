@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://d2ma02sn66i88"]
+
+[ext_resource type="Script" uid="uid://cr3ga17ynhyon" path="res://star_item.gd" id="1_bt4fy"]
+[ext_resource type="Texture2D" uid="uid://bydbwcrtrveqc" path="res://assets/star.png" id="1_om7gc"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_v34oq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_om7gc")
+}],
+"loop": true,
+"name": &"spin",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bt4fy"]
+size = Vector2(14, 13)
+
+[node name="StarItem" type="Area2D"]
+script = ExtResource("1_bt4fy")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_v34oq")
+animation = &"spin"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_bt4fy")
+
+[node name="Marker2D" type="Marker2D" parent="."]

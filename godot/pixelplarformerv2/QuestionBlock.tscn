@@ -48,4 +48,4 @@ animation = &"active"
 shape = SubResource("RectangleShape2D_2f7sd")
 
 [node name="ItemSpawnPoint" type="Marker2D" parent="."]
-position = Vector2(0, -14)
+position = Vector2(0, -19)

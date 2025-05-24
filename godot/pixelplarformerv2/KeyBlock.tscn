@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://daot5pjq2a1p2"]
+
+[ext_resource type="Script" uid="uid://b3ny7vnjedtqy" path="res://key_block.gd" id="1_ue1r4"]
+[ext_resource type="PackedScene" uid="uid://d2ma02sn66i88" path="res://StarItem.tscn" id="2_hlu5a"]
+[ext_resource type="Texture2D" uid="uid://hrwdgxky2mdi" path="res://assets/tilemap.png" id="2_of5jh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ue1r4"]
+atlas = ExtResource("2_of5jh")
+region = Rect2(152, 19, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jiwgn"]
+atlas = ExtResource("2_of5jh")
+region = Rect2(171, 19, 18, 18)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_m1x1a"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ue1r4")
+}],
+"loop": true,
+"name": &"locked_key_block",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jiwgn")
+}],
+"loop": true,
+"name": &"opened_key_block",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ue1r4"]
+size = Vector2(18, 18)
+
+[node name="KeyBlock" type="StaticBody2D"]
+script = ExtResource("1_ue1r4")
+star_scene = ExtResource("2_hlu5a")
+
+[node name="BlockSprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_m1x1a")
+animation = &"opened_key_block"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ue1r4")
+
+[node name="ItemSpawnPoint" type="Marker2D" parent="."]
+position = Vector2(0, -17)
