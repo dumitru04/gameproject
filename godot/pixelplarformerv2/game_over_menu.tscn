@@ -4,7 +4,6 @@
 
 [node name="GameOverMenu" type="CanvasLayer"]
 process_mode = 2
-visible = false
 script = ExtResource("1_14ib6")
 
 [node name="Background" type="ColorRect" parent="."]
