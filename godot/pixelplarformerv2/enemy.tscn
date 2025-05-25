@@ -70,3 +70,6 @@ shape = SubResource("RectangleShape2D_qi2p4")
 [node name="PhysicsShape" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_4gyqm")
+
+[node name="LedgeRaycast" type="RayCast2D" parent="."]
+target_position = Vector2(0, 20)

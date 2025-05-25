@@ -2,13 +2,13 @@
 
 [ext_resource type="Script" uid="uid://b3ny7vnjedtqy" path="res://key_block.gd" id="1_ue1r4"]
 [ext_resource type="PackedScene" uid="uid://d2ma02sn66i88" path="res://StarItem.tscn" id="2_hlu5a"]
-[ext_resource type="Texture2D" uid="uid://hrwdgxky2mdi" path="res://assets/tilemap.png" id="2_of5jh"]
+[ext_resource type="Texture2D" uid="uid://b73dl02po0u7f" path="res://assets/tilemap.png" id="2_of5jh"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ue1r4"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_hlu5a"]
 atlas = ExtResource("2_of5jh")
 region = Rect2(152, 19, 18, 18)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_jiwgn"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_3jljr"]
 atlas = ExtResource("2_of5jh")
 region = Rect2(171, 19, 18, 18)
 
@@ -16,7 +16,7 @@ region = Rect2(171, 19, 18, 18)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ue1r4")
+"texture": SubResource("AtlasTexture_hlu5a")
 }],
 "loop": true,
 "name": &"locked_key_block",
@@ -24,7 +24,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_jiwgn")
+"texture": SubResource("AtlasTexture_3jljr")
 }],
 "loop": true,
 "name": &"opened_key_block",
@@ -40,7 +40,7 @@ star_scene = ExtResource("2_hlu5a")
 
 [node name="BlockSprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_m1x1a")
-animation = &"opened_key_block"
+animation = &"locked_key_block"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ue1r4")

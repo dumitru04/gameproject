@@ -42,7 +42,7 @@ life_up_scene = ExtResource("3_2f7sd")
 
 [node name="BlockSprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_51l48")
-animation = &"active"
+animation = &"empty"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_2f7sd")

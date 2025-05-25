@@ -14,6 +14,10 @@ extends CharacterBody2D
 # Y-координата, ниже которой игрок проигрывает.
 @export var death_y_threshold = 1000.0 
 
+# Новые переменные для завершения уровня
+var is_completing_level: bool = false
+var level_complete_run_speed: float = 120.0
+
 # --- Ссылки на узлы (@onready) ---
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var head_hit_raycast: RayCast2D = $HeadHitRaycast 
@@ -29,12 +33,19 @@ const CAMERA_DEFAULT_LIMIT_BOTTOM = 67108864
 @export var pause_menu_node_path: NodePath
 var pause_menu_node: CanvasLayer # Будет инициализировано в _ready
 
+@export var invincibility_duration: float = 1.0 # Длительность неуязвимости и мигания в секундах
+@export var knockback_horizontal_power: float = 250.0
+@export var knockback_vertical_power: float = -150.0
+
+var is_invincible: bool = false
+var invincibility_timer: Timer
 
 func _ready():
 	if camera_node: # Предполагается, что camera_node у вас уже есть
 		camera_node.limit_left = 0
 		camera_node.limit_bottom = CAMERA_DEFAULT_LIMIT_BOTTOM
 	# camera_bottom_limit_was_set = false # Эта переменная тоже должна быть объявлена
+	pass
 
 	# Инициализация ссылки на меню паузы
 	if not pause_menu_node_path.is_empty():
@@ -42,6 +53,58 @@ func _ready():
 	
 	if not pause_menu_node:
 		print("[Player] _ready: !!! ОШИБКА: Узел меню паузы не найден! Проверьте pause_menu_node_path в инспекторе или абсолютный путь.")
+	
+	invincibility_timer = Timer.new()
+	invincibility_timer.one_shot = true # Таймер сработает один раз
+	invincibility_timer.timeout.connect(_on_invincibility_timer_timeout) # Подключаем сигнал
+	add_child(invincibility_timer) 
+
+func take_damage(damage_source_position: Vector2 = global_position): # damage_source_position - позиция того, кто нанес урон
+	if is_invincible or not is_physics_processing(): # Если уже неуязвим или "мертв"
+		return
+
+	print("[Player] Получен урон.")
+	GameManager.lose_life() 
+	
+	is_invincible = true
+	invincibility_timer.start(invincibility_duration)
+	print("[Player] Неуязвимость активирована на {invincibility_duration} сек.")
+
+	# --- Эффект мигания ---
+	var blink_tween = create_tween().set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	# Количество полных миганий (невидимый -> видимый). 
+	# Если invincibility_duration = 1.0, а длительность одного мигания 0.1+0.1 = 0.2, то будет 5 миганий.
+	var num_blinks = int(invincibility_duration / 0.2) 
+	blink_tween.set_loops(num_blinks) 
+	
+	blink_tween.tween_property(animated_sprite, "modulate:a", 0.3, 0.1) # Стать полупрозрачным
+	blink_tween.tween_property(animated_sprite, "modulate:a", 1.0, 0.1) # Вернуть полную видимость
+	# Убедимся, что по окончании мигания спрайт точно видим (если неуязвимость еще не прошла)
+	blink_tween.finished.connect(func(): 
+		if is_instance_valid(animated_sprite) and is_invincible: # Если все еще неуязвим (на случай если длительность твина и таймера не совпадут идеально)
+			animated_sprite.modulate.a = 1.0
+	)
+	print("[Player] Эффект мигания запущен.")
+
+	# --- Логика отбрасывания ---
+	var knock_direction_x = sign(global_position.x - damage_source_position.x)
+	
+	# Если источник урона находится точно там же по X (маловероятно, но возможно)
+	if knock_direction_x == 0:
+		knock_direction_x = -1.0 if not animated_sprite.flip_h else 1.0 # Отбросить в сторону, противоположную взгляду
+
+	velocity.x = knock_direction_x * knockback_horizontal_power
+	velocity.y = knockback_vertical_power # Подбросить вверх
+	print("[Player] Игрок отброшен. Новая velocity: {velocity}")
+	
+	# move_and_slide() будет вызван в _physics_process и применит эту скорость.
+	# Можно добавить временное отключение управления игроком ("стан").
+
+func _on_invincibility_timer_timeout():
+	is_invincible = false
+	if is_instance_valid(animated_sprite): # Проверка, что узел еще существует
+		animated_sprite.modulate.a = 1.0 # Гарантированно вернуть полную видимость
+	print("[Player] Неуязвимость закончилась.")	
 	
 func _unhandled_input(event: InputEvent):
 	if event.is_action_pressed("ui_pause"):
@@ -61,6 +124,9 @@ func _unhandled_input(event: InputEvent):
 			# get_viewport().set_input_as_handled() // Можно и здесь, если меню паузы не поглотило событие первым
 
 func _physics_process(delta):
+	if is_completing_level:
+		_handle_level_complete_run(delta)
+		return # Пропускаем обычную обработку ввода и физики
 	# Гравитация
 	if not is_on_floor():
 		velocity.y += gravity * delta
@@ -123,6 +189,33 @@ func _physics_process(delta):
 	if global_position.y > death_y_threshold:
 		handle_death()
 
+func _handle_level_complete_run(delta: float):
+	velocity.x = level_complete_run_speed # Двигаемся вправо
+	
+	# Применяем гравитацию, чтобы игрок не летел по воздуху, если есть неровности
+	if not is_on_floor():
+		velocity.y += gravity * delta
+	else:
+		velocity.y = 0 # Если на земле, вертикальная скорость 0
+	
+	if animated_sprite.sprite_frames.has_animation("run"): # Убедимся, что играется анимация бега
+		animated_sprite.play("run")
+	animated_sprite.flip_h = true # Смотрим вправо
+
+	move_and_slide()
+	# Камера, будучи дочерним узлом, должна следовать за игроком
+	# Никаких специальных проверок на "убежал за экран" здесь не нужно,
+	# уровень сам решит, когда показать меню.
+
+# Новая функция, вызываемая извне (например, из скрипта уровня)
+func start_level_complete_sequence():
+	if is_completing_level: # Если уже выполняется, ничего не делаем
+		return
+		
+	print("[Player] Запуск последовательности завершения уровня.")
+	is_completing_level = true
+	# Отключаем коллизии с врагами/опасностями на время убегания (опционально)
+	# set_collision_mask_value(НОМЕР_СЛОЯ_ВРАГОВ, false)
 
 func handle_death(): # Вызывается при падении в пропасть
 	if not is_physics_processing(): 
@@ -134,13 +227,6 @@ func handle_death(): # Вызывается при падении в пропа�
 	
 	# ИЗМЕНЕНИЕ: Вызываем новую функцию для мгновенного Game Over
 	GameManager.trigger_instant_game_over("Упал в пропасть")
-
-
-func take_damage():
-	if not is_physics_processing(): return
-	GameManager.lose_life()
-	print("Игрок получил урон! Жизней: ", GameManager.lives)
-
 
 func get_jump_velocity() -> float:
 	return jump_velocity_value

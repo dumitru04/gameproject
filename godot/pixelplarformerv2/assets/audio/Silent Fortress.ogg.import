@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://du1bopuuhojxd"
+path="res://.godot/imported/Silent Fortress.ogg-6938dcd8f8ab5d14f776f9ff9f204091.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/audio/Silent Fortress.ogg"
+dest_files=["res://.godot/imported/Silent Fortress.ogg-6938dcd8f8ab5d14f776f9ff9f204091.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

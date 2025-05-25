@@ -1,4 +1,4 @@
-# level1.gd (или скрипт вашего текущего уровня)
+# level2.gd (или скрипт вашего текущего уровня)
 extends Node2D # или Node
 
 @export var level_duration_seconds: float = 180.0 

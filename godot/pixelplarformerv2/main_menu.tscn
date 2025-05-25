@@ -1,0 +1,72 @@
+[gd_scene load_steps=5 format=3 uid="uid://32oqgwj41jev"]
+
+[ext_resource type="Theme" uid="uid://bpnuu8shmirwe" path="res://pixel_theme.tres" id="1_7vrkn"]
+[ext_resource type="Texture2D" uid="uid://pbymrsl40tcu" path="res://assets/level1_back.png" id="2_fu7sn"]
+[ext_resource type="Script" uid="uid://dffvwvkmcq26m" path="res://main_menu.gd" id="2_jix8l"]
+[ext_resource type="AudioStream" uid="uid://bequq1vuarwsf" path="res://assets/audio/Pathway.ogg" id="4_jix8l"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_7vrkn")
+script = ExtResource("2_jix8l")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 1282.0
+offset_bottom = 699.0
+scale = Vector2(0.515, 0.515)
+texture = ExtResource("2_fu7sn")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -113.0
+offset_top = 86.0
+offset_right = 113.0
+offset_bottom = 108.0
+grow_horizontal = 2
+text = "PRoject adventure"
+horizontal_alignment = 1
+
+[node name="MenuButtonsContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="StartGameButton" type="Button" parent="MenuButtonsContainer"]
+layout_mode = 2
+text = "New Game"
+
+[node name="LevelSelectButton" type="Button" parent="MenuButtonsContainer"]
+layout_mode = 2
+text = "Select Level"
+
+[node name="SettingsButton" type="Button" parent="MenuButtonsContainer"]
+layout_mode = 2
+text = "Settings"
+
+[node name="ExitGameButton" type="Button" parent="MenuButtonsContainer"]
+layout_mode = 2
+text = "Exit"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_jix8l")
+autoplay = true
+parameters/looping = true

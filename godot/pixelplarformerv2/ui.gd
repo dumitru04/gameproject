@@ -72,6 +72,13 @@ func _on_lives_updated(new_lives: int):
 	else:
 		print("UI _on_lives_updated: Узел LivesCountLabel не найден.")
 
+func get_remaining_time() -> float:
+	return current_time_left
+
+func stop_level_timer(): # Этот метод у вас уже должен быть
+	if level_timer and not level_timer.is_stopped():
+		level_timer.stop()
+		print("UI: Таймер уровня ОСТАНОВЛЕН.")
 
 func _on_score_added_for_life(points_value: int):
 	if notification_label:

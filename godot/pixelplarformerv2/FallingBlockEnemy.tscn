@@ -1,0 +1,100 @@
+[gd_scene load_steps=13 format=3 uid="uid://dyubha7uh8ag5"]
+
+[ext_resource type="Script" uid="uid://cprew0um8q62u" path="res://falling_block_enemy.gd" id="1_05gqk"]
+[ext_resource type="Texture2D" uid="uid://bjji8uqifnyf3" path="res://assets/tilemap-characters.png" id="2_4spee"]
+[ext_resource type="Texture2D" uid="uid://digm63rl2hxa7" path="res://assets/item_block.png" id="3_0cvfb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2wdt1"]
+atlas = ExtResource("2_4spee")
+region = Rect2(75, 25, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u24hh"]
+atlas = ExtResource("3_0cvfb")
+region = Rect2(18, 0, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5c7u2"]
+atlas = ExtResource("3_0cvfb")
+region = Rect2(0, 0, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lorqj"]
+atlas = ExtResource("2_4spee")
+region = Rect2(50, 25, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_u7j2a"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2wdt1")
+}],
+"loop": true,
+"name": &"falling",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u24hh")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5c7u2")
+}],
+"loop": true,
+"name": &"squashed",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lorqj")
+}],
+"loop": true,
+"name": &"warning",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qwoif"]
+size = Vector2(18, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_376sa"]
+size = Vector2(14, 91)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pci3b"]
+size = Vector2(20, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i751i"]
+size = Vector2(16, 19)
+
+[node name="FallingBlockEnemy" type="CharacterBody2D"]
+script = ExtResource("1_05gqk")
+
+[node name="BlockSprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_u7j2a")
+animation = &"warning"
+
+[node name="PhysicsShape" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_qwoif")
+
+[node name="PlayerDetector" type="Area2D" parent="."]
+position = Vector2(0, 8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
+position = Vector2(0, 46)
+shape = SubResource("RectangleShape2D_376sa")
+debug_color = Color(0.696959, 0.493872, 0.0127514, 0.42)
+
+[node name="DamageArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
+position = Vector2(0, 8.5)
+shape = SubResource("RectangleShape2D_pci3b")
+debug_color = Color(0.998324, 0, 0.144935, 0.42)
+
+[node name="StompHitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StompHitbox"]
+position = Vector2(0, -13.5)
+shape = SubResource("RectangleShape2D_i751i")
+debug_color = Color(0, 0.644437, 0.280924, 0.42)

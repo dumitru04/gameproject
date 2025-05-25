@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://bg7tfmlfl3634"]
+
+[ext_resource type="Script" uid="uid://bb38icasedhbb" path="res://finish_area.gd" id="1_qhsyy"]
+[ext_resource type="Texture2D" uid="uid://lyphuesa8ul4" path="res://assets/flag_s.png" id="1_s5h2h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qhsyy"]
+size = Vector2(18, 18)
+
+[node name="FinishArea" type="Area2D"]
+script = ExtResource("1_qhsyy")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_s5h2h")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_qhsyy")
