@@ -1,0 +1,32 @@
+[gd_scene load_steps=14 format=3 uid="uid://dtoojb2f4fu05"]
+
+[ext_resource type="Script" uid="uid://2qn27gbwrh8x" path="res://music_manager.gd" id="1_tylfe"]
+[ext_resource type="AudioStream" uid="uid://bequq1vuarwsf" path="res://assets/audio/Pathway.ogg" id="2_bycfj"]
+[ext_resource type="AudioStream" uid="uid://yso3p3frp4is" path="res://assets/audio/Mysterious-Dawn.ogg" id="3_vga7j"]
+[ext_resource type="AudioStream" uid="uid://cxqxcbd2d03rm" path="res://assets/audio/Dungeon Echoes.ogg" id="4_586rx"]
+[ext_resource type="AudioStream" uid="uid://bqql82uwqcycb" path="res://assets/audio/Skyward.ogg" id="5_sots7"]
+[ext_resource type="AudioStream" uid="uid://wdb5tblxc525" path="res://assets/audio/Contemplative.ogg" id="6_apc2x"]
+[ext_resource type="AudioStream" uid="uid://b0am4e6mwaxp4" path="res://assets/audio/sfx/click.ogg" id="7_u7qmi"]
+[ext_resource type="AudioStream" uid="uid://bkvimumaw2ur" path="res://assets/audio/sfx/jump.ogg" id="8_l0n74"]
+[ext_resource type="AudioStream" uid="uid://c6ucl3wlewa84" path="res://assets/audio/sfx/hitHurt.ogg" id="9_6bu3j"]
+[ext_resource type="AudioStream" uid="uid://c0q2upj04c2ke" path="res://assets/audio/sfx/pickupCoin.ogg" id="10_wdhd3"]
+[ext_resource type="AudioStream" uid="uid://brr6d6tciwyqn" path="res://assets/audio/sfx/hitHurt_enemy.ogg" id="11_kyyes"]
+[ext_resource type="AudioStream" uid="uid://bg0bou1itqvy1" path="res://assets/audio/sfx/blipSelect.ogg" id="12_22gu4"]
+[ext_resource type="AudioStream" uid="uid://g5phjce8kjxc" path="res://assets/audio/sfx/powerUp.ogg" id="13_7n7fs"]
+
+[node name="MusicManager" type="Node"]
+script = ExtResource("1_tylfe")
+main_menu_theme = ExtResource("2_bycfj")
+level_1_theme = ExtResource("3_vga7j")
+level_2_theme = ExtResource("4_586rx")
+level_3_theme = ExtResource("5_sots7")
+overlay_menu_theme = ExtResource("6_apc2x")
+sfx_button_click = ExtResource("7_u7qmi")
+sfx_player_jump = ExtResource("8_l0n74")
+sfx_player_damage = ExtResource("9_6bu3j")
+sfx_coin_collect = ExtResource("10_wdhd3")
+sfx_enemy_defeated = ExtResource("11_kyyes")
+sfx_block_hit = ExtResource("12_22gu4")
+sfx_powerup_spawn = ExtResource("13_7n7fs")
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]

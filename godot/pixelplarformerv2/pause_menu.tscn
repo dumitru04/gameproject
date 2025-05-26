@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://b0c4poll4kgou"]
+[gd_scene load_steps=2 format=3 uid="uid://b0c4poll4kgou"]
 
 [ext_resource type="Script" uid="uid://d4nyy2oh1hs0n" path="res://pause_menu.gd" id="1_hdmo1"]
-[ext_resource type="AudioStream" uid="uid://wdb5tblxc525" path="res://assets/audio/Contemplative.ogg" id="2_nwcfo"]
 
 [node name="PauseMenu" type="CanvasLayer"]
 process_mode = 2
@@ -51,9 +50,3 @@ text = "Restart Level"
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Exit to Menu"
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("2_nwcfo")
-volume_db = -8.0
-autoplay = true
-parameters/looping = true

@@ -40,7 +40,7 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_colors/font_color = Color(0.762404, 0.762404, 0.762404, 1)
 theme_override_fonts/font = ExtResource("2_prwox")
-text = "Score: 000000"
+text = "Score: 0"
 horizontal_alignment = 1
 
 [node name="RestartButton" type="Button" parent="MainContainer"]

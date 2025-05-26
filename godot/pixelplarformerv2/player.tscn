@@ -30,6 +30,8 @@ animations = [{
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_onrkg")
+camera_lock_y_threshold = 100.0
+death_y_threshold = 500.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 0.5)
